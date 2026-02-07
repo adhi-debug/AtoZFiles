@@ -1,0 +1,117 @@
+/* Main Window - Deep Obsidian */
+window {
+    background-color: #050505;
+    color: #D4AF37;
+    font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+/* Headerbar - The Crown */
+headerbar {
+    background: #000000;
+    border-bottom: 1px solid #D4AF37;
+    padding: 10px;
+}
+
+headerbar .title {
+    font-weight: 300;
+    letter-spacing: 5px;
+    color: #D4AF37;
+}
+
+headerbar .subtitle {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #888888;
+}
+
+/* Entry Fields - Seamless Glass */
+entry {
+    background: #0f0f0f;
+    border: 1px solid #1a1a1a;
+    border-radius: 0px;
+    padding: 12px;
+    color: #ffffff;
+    font-size: 13px;
+}
+
+entry:focus {
+    border-color: #D4AF37;
+    background: #141414;
+}
+
+/* Buttons - Architectural Minimalist */
+button {
+    background: transparent;
+    color: #D4AF37;
+    border: 1px solid #1a1a1a;
+    border-radius: 0px;
+    padding: 8px 25px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+}
+
+button:hover {
+    background: #D4AF37;
+    color: #000000;
+    border-color: #D4AF37;
+}
+
+/* Organize Button - The Master Action */
+#organize_btn {
+    background: #D4AF37;
+    color: #000000;
+    border: 1px solid #D4AF37;
+    font-weight: 800;
+}
+
+#organize_btn:hover {
+    background: #ffffff;
+    color: #000000;
+    border-color: #ffffff;
+}
+
+/* Log / Console - Dimmed Matrix */
+frame {
+    border: 1px solid #111111;
+}
+
+textview text {
+    background-color: #000000;
+    color: #666666;
+    font-family: "Consolas", "Monospace";
+    font-size: 11px;
+}
+
+/* Progress Bar - Gold Filament */
+progressbar trough {
+    background-color: #111111;
+    border: none;
+    min-height: 2px;
+}
+
+progressbar progress {
+    background-color: #D4AF37;
+}
+
+#progress_done progress {
+    background-color: #ffffff;
+}
+
+/* Cancel / Exit - Stealth Grey */
+#cancel_btn {
+    color: #444444;
+    border: 1px solid #111111;
+}
+
+#cancel_btn:hover {
+    color: #ffffff;
+    background: #ff0000;
+    border-color: #ff0000;
+}
+
+/* Combobox - Minimalist Dropdown */
+combobox button {
+    background: #0a0a0a;
+    border: 1px solid #1a1a1a;
+    color: #D4AF37;
+}

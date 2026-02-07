@@ -1,0 +1,31 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build AtoZfile (Debug)",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                "src/*.c",
+                "-o",
+                "AtoZfile.exe",
+                "`pkg-config --cflags --libs gtk+-3.0`"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build AtoZfile (Release with Icon)",
+            "type": "shell",
+            "command": "bash",
+            "args": [
+                "-c",
+                "windres resources/icon.rc -O coff -o resources/icon.res && gcc src/*.c resources/icon.res -o AtoZfile.exe `pkg-config --cflags --libs gtk+-3.0`"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+
+# build outputs
+*.exe
+*.dll
+*.o
+*.res
+installer/
+release/
+
+# logs & runtime data
+output/
+*.log
+*.db
+
+# editor / OS files
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
