@@ -130,7 +130,7 @@ See **LICENSE** for details.
 
 ##  Credits 📝
 
-Developed by: V.Chandanadhithyan and Sanjay S, 2025
+Developed by: V.Chandanadhithyan , 2025
 Language: C
 Framework: GTK3
 Platform: Windows / MSYS2 MinGW64
