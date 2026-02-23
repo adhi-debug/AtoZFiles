@@ -1,117 +1,99 @@
-/* Main Window - Deep Obsidian */
-window {
-    background-color: #050505;
-    color: #D4AF37;
-    font-family: "Segoe UI", "Arial", sans-serif;
+/* Animated Root - Soft pulsing glow behind the glass */
+#animated_glow {
+    background: radial-gradient(circle at 50% 120%, #1e2a4a 0%, #050608 80%);
 }
 
-/* Headerbar - The Crown */
-headerbar {
-    background: #000000;
-    border-bottom: 1px solid #D4AF37;
+/* Transmorphic Main Container */
+#main_glass_vbox {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 30px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+}
+
+/* Bottom Log Section - No more gray block */
+#transmorphic_log_frame {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
     padding: 10px;
 }
 
-headerbar .title {
-    font-weight: 300;
-    letter-spacing: 5px;
-    color: #D4AF37;
-}
-
-headerbar .subtitle {
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: #888888;
-}
-
-/* Entry Fields - Seamless Glass */
-entry {
-    background: #0f0f0f;
-    border: 1px solid #1a1a1a;
-    border-radius: 0px;
-    padding: 12px;
-    color: #ffffff;
+#cinematic_log_view {
+    background: transparent;
+    color: #94a3b8; 
+    font-family: "Consolas", monospace;
     font-size: 13px;
 }
 
-entry:focus {
-    border-color: #D4AF37;
-    background: #141414;
+/* Entries - Sleek Glass */
+entry {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #ffffff;
+    padding: 10px;
 }
 
-/* Buttons - Architectural Minimalist */
+entry:focus {
+    border-color: #6366f1;
+    background: rgba(255, 255, 255, 0.07);
+}
+
+/* Transmorphic Buttons */
 button {
-    background: transparent;
-    color: #D4AF37;
-    border: 1px solid #1a1a1a;
-    border-radius: 0px;
-    padding: 8px 25px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: #cbd5e1;
+    font-weight: bold;
+    padding: 8px 16px;
 }
 
 button:hover {
-    background: #D4AF37;
-    color: #000000;
-    border-color: #D4AF37;
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+    border-color: #6366f1;
 }
 
-/* Organize Button - The Master Action */
+/* Execute Button - Cinematic Blue/Purple Gradient */
 #organize_btn {
-    background: #D4AF37;
-    color: #000000;
-    border: 1px solid #D4AF37;
-    font-weight: 800;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
 }
 
 #organize_btn:hover {
-    background: #ffffff;
-    color: #000000;
-    border-color: #ffffff;
+    box-shadow: 0 0 30px rgba(99, 102, 241, 0.7);
 }
 
-/* Log / Console - Dimmed Matrix */
-frame {
-    border: 1px solid #111111;
+/* Progress Bar - Liquid Neon Blue */
+#progress_active trough {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    min-height: 8px;
 }
 
-textview text {
-    background-color: #000000;
-    color: #666666;
-    font-family: "Consolas", "Monospace";
-    font-size: 11px;
+#progress_active progress {
+    background: linear-gradient(90deg, #6366f1, #38bdf8);
+    border-radius: 20px;
 }
 
-/* Progress Bar - Gold Filament */
-progressbar trough {
-    background-color: #111111;
-    border: none;
-    min-height: 2px;
+/* Combo Box Dropdown */
+#glass_combo button {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: #38bdf8;
 }
 
-progressbar progress {
-    background-color: #D4AF37;
-}
-
-#progress_done progress {
-    background-color: #ffffff;
-}
-
-/* Cancel / Exit - Stealth Grey */
+/* Exit Button */
 #cancel_btn {
-    color: #444444;
-    border: 1px solid #111111;
+    color: #ff7b72;
+    border-color: rgba(255, 123, 114, 0.2);
 }
 
 #cancel_btn:hover {
-    color: #ffffff;
-    background: #ff0000;
-    border-color: #ff0000;
-}
-
-/* Combobox - Minimalist Dropdown */
-combobox button {
-    background: #0a0a0a;
-    border: 1px solid #1a1a1a;
-    color: #D4AF37;
+    background: #da3633;
+    color: white;
 }

@@ -4,7 +4,7 @@
 
 #include <string.h>
 #include <sqlite3.h>
-#include <glib.h>   // ✅ ADDED
+#include <glib.h>
 
 /* widgets */
 static GtkWidget *src_entry;
@@ -40,13 +40,12 @@ static gboolean ui_log_idle(gpointer data)
     GtkTextIter end;
 
     gtk_text_buffer_get_end_iter(buffer, &end);
-    gtk_text_buffer_insert(buffer, &end, "  LOG // ", -1);
+    gtk_text_buffer_insert(buffer, &end, "   LOG // ", -1);
     gtk_text_buffer_insert(buffer, &end, data, -1);
     gtk_text_buffer_insert(buffer, &end, "\n", -1);
 
     GtkTextMark *mark = gtk_text_buffer_get_insert(buffer);
-gtk_text_view_scroll_mark_onscreen(GTK_TEXT_VIEW(log_view), mark);
-
+    gtk_text_view_scroll_mark_onscreen(GTK_TEXT_VIEW(log_view), mark);
 
     g_free(data);
     return FALSE;
@@ -106,7 +105,6 @@ static void show_history(GtkButton *btn, gpointer win)
     gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
 
     gtk_container_add(GTK_CONTAINER(scroll), view);
-
     GtkTextBuffer *buf = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
 
     sqlite3 *db;
@@ -115,38 +113,26 @@ static void show_history(GtkButton *btn, gpointer win)
     sqlite3_open(db_path, &db);
 
     sqlite3_stmt *st;
-    sqlite3_prepare_v2(db,
-        "SELECT time,source,destination,category,operation FROM operations ORDER BY id DESC;",
-        -1, &st, 0);
+    sqlite3_prepare_v2(db, "SELECT time,source,destination,category,operation FROM operations ORDER BY id DESC;", -1, &st, 0);
 
     GtkTextIter end;
     gtk_text_buffer_get_end_iter(buf, &end);
 
     while (sqlite3_step(st) == SQLITE_ROW) {
-        gtk_text_buffer_insert(buf, &end,
-            (const char*)sqlite3_column_text(st,0), -1);
+        gtk_text_buffer_insert(buf, &end, (const char*)sqlite3_column_text(st,0), -1);
         gtk_text_buffer_insert(buf, &end, " | ", -1);
-
-        gtk_text_buffer_insert(buf, &end,
-            (const char*)sqlite3_column_text(st,4), -1);
+        gtk_text_buffer_insert(buf, &end, (const char*)sqlite3_column_text(st,4), -1);
         gtk_text_buffer_insert(buf, &end, " | ", -1);
-
-        gtk_text_buffer_insert(buf, &end,
-            (const char*)sqlite3_column_text(st,3), -1);
+        gtk_text_buffer_insert(buf, &end, (const char*)sqlite3_column_text(st,3), -1);
         gtk_text_buffer_insert(buf, &end, "\n   FROM: ", -1);
-
-        gtk_text_buffer_insert(buf, &end,
-            (const char*)sqlite3_column_text(st,1), -1);
+        gtk_text_buffer_insert(buf, &end, (const char*)sqlite3_column_text(st,1), -1);
         gtk_text_buffer_insert(buf, &end, "\n   TO:   ", -1);
-
-        gtk_text_buffer_insert(buf, &end,
-            (const char*)sqlite3_column_text(st,2), -1);
+        gtk_text_buffer_insert(buf, &end, (const char*)sqlite3_column_text(st,2), -1);
         gtk_text_buffer_insert(buf, &end, "\n\n", -1);
     }
 
     sqlite3_finalize(st);
     sqlite3_close(db);
-
     gtk_container_add(GTK_CONTAINER(w), scroll);
     gtk_widget_show_all(w);
 }
@@ -162,18 +148,15 @@ static void show_stats(GtkButton *btn, gpointer win)
     sqlite3_stmt *st;
 
     sqlite3_prepare_v2(db,"SELECT COUNT(*) FROM operations;",-1,&st,0);
-    if (sqlite3_step(st) == SQLITE_ROW)
-        total = sqlite3_column_int(st, 0);
+    if (sqlite3_step(st) == SQLITE_ROW) total = sqlite3_column_int(st, 0);
     sqlite3_finalize(st);
 
     sqlite3_prepare_v2(db,"SELECT COUNT(*) FROM operations WHERE operation='MOVE';",-1,&st,0);
-    if (sqlite3_step(st) == SQLITE_ROW)
-        moves = sqlite3_column_int(st, 0);
+    if (sqlite3_step(st) == SQLITE_ROW) moves = sqlite3_column_int(st, 0);
     sqlite3_finalize(st);
 
     sqlite3_prepare_v2(db,"SELECT COUNT(*) FROM operations WHERE operation='COPY';",-1,&st,0);
-    if (sqlite3_step(st) == SQLITE_ROW)
-        copies = sqlite3_column_int(st, 0);
+    if (sqlite3_step(st) == SQLITE_ROW) copies = sqlite3_column_int(st, 0);
     sqlite3_finalize(st);
 
     char categories[2048] = "";
@@ -191,26 +174,13 @@ static void show_stats(GtkButton *btn, gpointer win)
     sqlite3_close(db);
 
     char msg[4096];
-    snprintf(msg, sizeof(msg),
-        "📊 AtoZfile Statistics\n\n"
-        "Total files processed : %d\n"
-        "Moved files          : %d\n"
-        "Copied files         : %d\n\n"
-        "By category:\n%s",
-        total, moves, copies,
-        categories[0] ? categories : "No data yet.\n"
-    );
+    snprintf(msg, sizeof(msg), "📊 AtoZfile Statistics\n\nTotal files: %d\nMoves: %d\nCopies: %d\n\nBy category:\n%s",
+        total, moves, copies, categories[0] ? categories : "No data.\n");
 
-    GtkWidget *d = gtk_message_dialog_new(GTK_WINDOW(win),
-        GTK_DIALOG_MODAL,
-        GTK_MESSAGE_INFO,
-        GTK_BUTTONS_OK,
-        "%s", msg);
-
+    GtkWidget *d = gtk_message_dialog_new(GTK_WINDOW(win), GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_OK, "%s", msg);
     gtk_dialog_run(GTK_DIALOG(d));
     gtk_widget_destroy(d);
 }
-
 
 /* ---------- operation ---------- */
 
@@ -230,38 +200,43 @@ static void on_organize_clicked(GtkButton *btn, gpointer data)
     apply_operation_mode();
     set_backup(1);
     ui_set_progress(0);
-
     ui_log("INITIALIZING TASK...");
-    organize_files(
-        gtk_entry_get_text(GTK_ENTRY(src_entry)),
-        gtk_entry_get_text(GTK_ENTRY(dst_entry)));
+    organize_files(gtk_entry_get_text(GTK_ENTRY(src_entry)), gtk_entry_get_text(GTK_ENTRY(dst_entry)));
 }
 
-/* ---------- GUI ---------- */
+/* ---------- GUI INIT ---------- */
 
 void gui_init(GtkWidget *window)
 {
-    gtk_container_set_border_width(GTK_CONTAINER(window), 45);
+    // 1. Setup CSS
+    GtkCssProvider *provider = gtk_css_provider_new();
+    gtk_css_provider_load_from_path(provider, "assets/style.css", NULL);
+    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
+    // 2. Cinematic Overlay (For the background glow)
+    GtkWidget *overlay = gtk_overlay_new();
+    gtk_container_add(GTK_CONTAINER(window), overlay);
+
+    GtkWidget *glow_bg = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
+    gtk_widget_set_name(glow_bg, "animated_glow");
+    gtk_overlay_add_overlay(GTK_OVERLAY(overlay), glow_bg);
+
+    // 3. Main Layout Container
+    GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 25);
+    gtk_container_set_border_width(GTK_CONTAINER(vbox), 45);
+    gtk_widget_set_name(vbox, "main_glass_vbox");
+    gtk_overlay_add_overlay(GTK_OVERLAY(overlay), vbox);
+
+    // Header Bar
     GtkWidget *header = gtk_header_bar_new();
     gtk_header_bar_set_title(GTK_HEADER_BAR(header), "ATOZFILE");
     gtk_header_bar_set_subtitle(GTK_HEADER_BAR(header), "v1.0 PREMIUM TERMINAL");
     gtk_header_bar_set_show_close_button(GTK_HEADER_BAR(header), TRUE);
     gtk_window_set_titlebar(GTK_WINDOW(window), header);
 
-    GtkCssProvider *provider = gtk_css_provider_new();
-    gtk_css_provider_load_from_path(provider, "assets/style.css", NULL);
-    gtk_style_context_add_provider_for_screen(
-        gdk_screen_get_default(),
-        GTK_STYLE_PROVIDER(provider),
-        GTK_STYLE_PROVIDER_PRIORITY_APPLICATION
-    );
-
-    GtkWidget *vbox = gtk_box_new(GTK_ORIENTATION_VERTICAL, 25);
-    gtk_container_add(GTK_CONTAINER(window), vbox);
-
     /* SOURCE */
     GtkWidget *src_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_widget_set_name(src_box, "input_group");
     GtkWidget *src_up = gtk_button_new_with_label("UP");
     GtkWidget *src_btn = gtk_button_new_with_label("SOURCE");
     src_entry = gtk_entry_new();
@@ -272,6 +247,7 @@ void gui_init(GtkWidget *window)
 
     /* DESTINATION */
     GtkWidget *dst_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_widget_set_name(dst_box, "input_group");
     GtkWidget *dst_up = gtk_button_new_with_label("UP");
     GtkWidget *dst_btn = gtk_button_new_with_label("TARGET");
     dst_entry = gtk_entry_new();
@@ -285,6 +261,7 @@ void gui_init(GtkWidget *window)
     gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(mode_combo), "PROTOCOL: SECURE MOVE");
     gtk_combo_box_text_append_text(GTK_COMBO_BOX_TEXT(mode_combo), "PROTOCOL: SECURE COPY");
     gtk_combo_box_set_active(GTK_COMBO_BOX(mode_combo), 0);
+    gtk_widget_set_name(mode_combo, "glass_combo");
 
     /* ACTIONS */
     GtkWidget *action_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 15);
@@ -308,17 +285,19 @@ void gui_init(GtkWidget *window)
     gtk_progress_bar_set_show_text(GTK_PROGRESS_BAR(progress_bar), TRUE);
     gtk_widget_set_name(progress_bar, "progress_active");
 
-    /* LOG */
+    /* LOG - Transmorphic Bottom Part */
     GtkWidget *log_frame = gtk_frame_new(NULL);
+    gtk_widget_set_name(log_frame, "transmorphic_log_frame");
     GtkWidget *scroll = gtk_scrolled_window_new(NULL, NULL);
-    gtk_widget_set_size_request(scroll, -1, 120);
+    gtk_widget_set_size_request(scroll, -1, 140);
     log_view = gtk_text_view_new();
     gtk_text_view_set_editable(GTK_TEXT_VIEW(log_view), FALSE);
+    gtk_widget_set_name(log_view, "cinematic_log_view");
 
     gtk_container_add(GTK_CONTAINER(scroll), log_view);
     gtk_container_add(GTK_CONTAINER(log_frame), scroll);
 
-    /* PACK */
+    /* PACK ALL */
     gtk_box_pack_start(GTK_BOX(vbox), src_box, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), dst_box, FALSE, FALSE, 0);
     gtk_box_pack_start(GTK_BOX(vbox), mode_combo, FALSE, FALSE, 0);
@@ -338,4 +317,5 @@ void gui_init(GtkWidget *window)
     g_signal_connect(cancel_btn,"clicked",G_CALLBACK(cancel_organize),NULL);
 
     logger_init("output/atozfile.log");
+    gtk_widget_show_all(window);
 }
